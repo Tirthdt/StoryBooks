@@ -1,0 +1,7 @@
+{
+  "name": "storyBooks",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Stories </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2">
+        <ion-item [routerLink]="['/signup']">
+          <ion-label>SignUp</ion-label>
+        </ion-item>
+        <ion-item [routerLink]="['/login']">
+          <ion-label>Login</ion-label>
+        </ion-item>
+        <ion-button
+          (click)="signout()"
+          expand="block"
+          fill="clear"
+          shape="round"
+        >
+          Signout
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
+      <ion-card-header>
+        <ion-card-title>Choose Images to Upload</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-button color="success" (click)="openFileSelector()" shape="round">
+          <span>Select Image</span>
+          <input
+            [hidden]="true"
+            id="uploadBtn"
+            type="file"
+            class="upload"
+            (change)="uploadFile($event.target.files)"
+          />
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="ion-text-center" *ngIf="isUploading && !isUploaded">
+      <ion-card-header>
+        <ion-card-title>Selected File:<b>{{ fileName }}</b></ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div *ngIf="percentage$ | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar [value]="pct / 100"></ion-progress-bar>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card [hidden]="true">
+      <div *ngIf="snapshot$ | async as snap"></div>
+    </ion-card>
+  </ion-grid>
+</ion-content>

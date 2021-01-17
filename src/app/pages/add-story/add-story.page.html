@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Story</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/feed"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="10" offset-md="1">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title id="msg">The New Story Awaits....</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-img *ngIf="storyImage" [src]="storyImage"></ion-img>
+            <ion-button
+              (click)="openFileSelector()"
+              expand="block"
+              shape="round"
+            >
+              {{ file ? 'Change Image' : 'Select Image' }}
+              <input
+                [hidden]="true"
+                id="uploadBtn"
+                type="file"
+                class="upload"
+                (change)="previewFile($event.target.files)"
+              />
+            </ion-button>
+            <form [formGroup]="storyForm" (ngSubmit)="submit()">
+              <ion-item>
+                <ion-label position="floating">Title</ion-label>
+                <ion-input type="text" formControlName="title"></ion-input>
+              </ion-item>
+              <ion-text
+                color="danger"
+                *ngIf="title.invalid && (title.dirty || title.touched)"
+              >
+                <small>Please enter valid title(min 4 characters).</small>
+              </ion-text>
+              <ion-item>
+                <ion-label position="floating">Description</ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="description"
+                ></ion-input>
+              </ion-item>
+              <ion-text
+                color="danger"
+                *ngIf="description.invalid && (description.dirty || description.touched)"
+              >
+                <small
+                  >Please enter valid description(min 10 characters).</small
+                >
+              </ion-text>
+              <ion-item>
+                <ion-label position="floating">Enter the Story</ion-label>
+                <ion-textarea formControlName="story" rows="5"></ion-textarea>
+              </ion-item>
+              <ion-text
+                color="danger"
+                *ngIf="story.invalid && (story.dirty || story.touched)"
+              >
+                <small>Please enter valid story(min 10 characters).</small>
+              </ion-text>
+              <ion-button
+                type="submit"
+                [disabled]="title.invalid || description.invalid || story.invalid"
+                expand="block"
+              >
+                Submit
+              </ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

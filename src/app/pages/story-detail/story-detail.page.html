@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> StoryBooks </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        *ngIf="stories$ | async as story; else loading"
+        size-md="8"
+        offset-md="2"
+      >
+        <ion-card>
+          <ion-img [src]="story.imageUrl"></ion-img>
+          <ion-card-content>
+            <ion-card-header>
+              <ion-card-title><h1>{{ story.title }}</h1></ion-card-title>
+              <ion-card-subtitle>{{ story.description }}</ion-card-subtitle>
+            </ion-card-header>
+            <hr />
+            <ion-text color="primary"> {{ story.story }} </ion-text>
+            <br />
+            <ion-text color="seconday">
+              <h2>{{ story.likes }} people likes this story</h2>
+            </ion-text>
+          </ion-card-content>
+          <ion-button
+            size="large"
+            (click)="triggerLike(story.likes, story.id)"
+            fill="clear"
+            color="danger"
+          >
+            <i [class]="liked"></i>
+          </ion-button>
+        </ion-card>
+      </ion-col>
+
+      <ng-template #loading>
+        <ion-col size-md="8" offset-md="2"> </ion-col>
+      </ng-template>
+    </ion-row>
+  </ion-grid>
+</ion-content>
