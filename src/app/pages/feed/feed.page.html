@@ -1,11 +1,16 @@
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Start Menu</ion-title>
+      <ion-title class="menuTitle">StoryBooks</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
     <ion-list>
+      <ion-menu-toggle>
+        <ion-item detail [routerLink]="['/', 'favourites']">
+          <ion-label>Liked Stories</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
       <ion-menu-toggle>
         <ion-item detail button (click)="signout()">
           <ion-label>Logout</ion-label>

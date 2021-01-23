@@ -23,7 +23,8 @@ export class StoryDetailPage implements OnInit {
   async ngOnInit() {
     this.stories$ = this.storyService.getStory(this.storyId);
     const stories = await this.storyService.likedStories();
-    if (stories.includes(this.storyId)) {
+
+    if (stories && stories.includes(this.storyId)) {
       this.liked = "fas fa-heart";
     }
   }
@@ -39,7 +40,6 @@ export class StoryDetailPage implements OnInit {
   }
 
   ionViewWillLeave() {
-    console.log("here");
     if (this.liked === "fas fa-heart") {
       this.storyService.markFavourite(this.storyId);
     } else {

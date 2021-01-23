@@ -6,6 +6,7 @@ import { AuthService } from "./auth.service";
 import { Story } from "../models/story";
 import { map, switchMap, tap } from "rxjs/operators";
 import * as firebase from "firebase/app";
+import { combineLatest, of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -21,7 +22,7 @@ export class StoryService {
   addStory(story: Story) {
     const path = `StoryImages/${new Date().getTime()}_${story.image.name}`;
     const url = this.storage.ref(path);
-
+    console.log("Adding a story");
     return this.storage
       .upload(path, story.image)
       .then((res) => {
@@ -38,6 +39,9 @@ export class StoryService {
           likes: 0,
           createdAt: firebase.default.firestore.FieldValue.serverTimestamp(),
         });
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -96,12 +100,9 @@ export class StoryService {
       .ref(`${userId}/likedStories`)
       .once("value")
       .then((stories) => {
-        console.log(stories);
+        // console.log(stories);
         if (stories.val()) {
           const likedStories: any[] = Object.values(stories.val());
-          console.log(stories.val());
-          // console.log(likedStories);
-
           if (!likedStories.includes(storyId)) {
             return this.db.database.ref(`${userId}/likedStories`).push(storyId);
           }
@@ -127,15 +128,28 @@ export class StoryService {
   }
 
   async likedStories(): Promise<any[]> {
-    console.log("liked");
     const userId = this.auth.user || localStorage.getItem("userId");
     const stories = await (
       await this.db.database.ref(`${userId}/likedStories`).once("value")
     ).val();
-    console.log(stories);
+
     if (stories) {
       return Object.values(stories);
     }
-    return [];
+    return null;
+  }
+
+  async getLikedStories() {
+    const storyIds = await this.likedStories();
+
+    if (storyIds) {
+      const observables = storyIds.map((ids) => {
+        return this.getStory(ids);
+      });
+      return combineLatest(observables);
+    } else {
+      console.log("returning null");
+      return of([]);
+    }
   }
 }

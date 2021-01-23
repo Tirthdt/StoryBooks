@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Favourites</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="8" offset-md="2">
+        <ng-container *ngIf="likedStories$ | async; let stories; else loading">
+          <ion-item color="info" *ngIf="stories.length === 0">
+            <ion-text>No Stories liked yet...</ion-text>
+            <ion-text
+              [routerLink]="['/', 'feed']"
+              routerLinkActive="router-link-active"
+              color="primary"
+              style="cursor: pointer"
+            >
+              Go Back to feedback page..
+            </ion-text>
+          </ion-item>
+          <ion-list *ngIf="stories.length > 0">
+            <ion-item
+              detail
+              [routerLink]="['','story-detail', story.id]"
+              routerLinkActive="router-link-active"
+              *ngFor="let story of stories"
+            >
+              <ion-thumbnail>
+                <img [src]="story.imageUrl" />
+              </ion-thumbnail>
+              <ion-text class="ion-margin">
+                <h3>{{ story.title }}</h3>
+                <p>{{ story.description }}</p>
+              </ion-text>
+            </ion-item>
+          </ion-list>
+        </ng-container>
+        <ng-template #loading>
+          <ion-item *ngFor="let i of [1, 2, 3]">
+            <ion-thumbnail>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-text style="width: 100%" class="ion-margin">
+              <h3>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </p>
+            </ion-text>
+          </ion-item>
+        </ng-template>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
