@@ -20,8 +20,12 @@ export class StoryDetailPage implements OnInit {
     this.storyId = this.route.snapshot.paramMap.get("id");
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.stories$ = this.storyService.getStory(this.storyId);
+    const stories = await this.storyService.likedStories();
+    if (stories.includes(this.storyId)) {
+      this.liked = "fas fa-heart";
+    }
   }
 
   triggerLike(likes: number, id: string) {
@@ -32,5 +36,14 @@ export class StoryDetailPage implements OnInit {
     );
     this.liked =
       this.liked === "fas fa-heart" ? "far fa-heart" : "fas fa-heart";
+  }
+
+  ionViewWillLeave() {
+    console.log("here");
+    if (this.liked === "fas fa-heart") {
+      this.storyService.markFavourite(this.storyId);
+    } else {
+      this.storyService.removeFromFavourite(this.storyId);
+    }
   }
 }

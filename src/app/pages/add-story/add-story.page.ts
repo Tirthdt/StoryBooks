@@ -74,10 +74,10 @@ export class AddStoryPage implements OnInit {
     this.file = selectedFile["0"];
     if (selectedFile && selectedFile["0"]) {
       const reader = new FileReader();
-      reader.readAsDataURL(selectedFile[0]);
       reader.onload = (event) => {
         this.storyImage = event.target.result;
       };
+      reader.readAsDataURL(selectedFile[0]);
     }
   }
 

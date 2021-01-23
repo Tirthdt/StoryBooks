@@ -12,14 +12,13 @@ export class AuthService {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.userId.next(user.uid);
+
         localStorage.setItem("userId", user.uid);
-        console.log("user logged in");
       } else {
         this.userId.next(null);
         if (localStorage.getItem("userId")) {
           localStorage.removeItem("userId");
         }
-        console.log("user logged out");
       }
     });
   }
@@ -37,6 +36,6 @@ export class AuthService {
   }
 
   signout() {
-    this.auth.signOut();
+    return this.auth.signOut();
   }
 }

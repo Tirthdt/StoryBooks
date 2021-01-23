@@ -5,6 +5,7 @@ import {
   AngularFireUploadTask,
 } from "@angular/fire/storage";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { StoryService } from "../services/story.service";
 import { finalize, tap } from "rxjs/operators";
 import { Observable } from "rxjs";
 
@@ -29,7 +30,8 @@ export class HomePage {
   constructor(
     private auth: AuthService,
     private storage: AngularFireStorage,
-    private db: AngularFirestore
+    private db: AngularFirestore,
+    private story: StoryService
   ) {
     this.isUploading = false;
     this.isUploaded = false;
@@ -91,5 +93,13 @@ export class HomePage {
 
   signout() {
     this.auth.signout();
+  }
+
+  markFavourite() {
+    this.story.markFavourite("abc");
+  }
+
+  removeFavourite() {
+    this.story.removeFromFavourite("abc");
   }
 }

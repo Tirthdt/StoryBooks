@@ -24,7 +24,8 @@
         </ion-button>
       </ion-col>
     </ion-row>
-    <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
+  </ion-grid>
+  <!-- <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
       <ion-card-header>
         <ion-card-title>Choose Images to Upload</ion-card-title>
       </ion-card-header>
@@ -57,5 +58,11 @@
     <ion-card [hidden]="true">
       <div *ngIf="snapshot$ | async as snap"></div>
     </ion-card>
-  </ion-grid>
+  </ion-grid> -->
+  <ion-button (click)="markFavourite()" expand="block" shape="round">
+    Mark
+  </ion-button>
+  <ion-button (click)="removeFavourite()" expand="block" shape="round">
+    Remove
+  </ion-button>
 </ion-content>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable } from "rxjs";
-import { Story } from "../../models/story";
 import { StoryService } from "../../services/story.service";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-feed",
@@ -17,9 +18,19 @@ export class FeedPage implements OnInit {
     autoplay: true,
   };
 
-  constructor(private storyService: StoryService) {}
+  constructor(
+    private storyService: StoryService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.stories$ = this.storyService.getAllStories();
+  }
+
+  signout() {
+    this.authService.signout().then(() => {
+      this.router.navigate([""]);
+    });
   }
 }

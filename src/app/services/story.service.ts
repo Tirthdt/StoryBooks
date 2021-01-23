@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { AngularFireStorage } from "@angular/fire/storage";
+import { AngularFireDatabase } from "@angular/fire/database";
+import { AuthService } from "./auth.service";
 import { Story } from "../models/story";
 import { map, switchMap, tap } from "rxjs/operators";
 import * as firebase from "firebase/app";
-import { of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -12,7 +13,9 @@ import { of } from "rxjs";
 export class StoryService {
   constructor(
     private angularFireStore: AngularFirestore,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private db: AngularFireDatabase,
+    private auth: AuthService
   ) {}
 
   addStory(story: Story) {
@@ -85,5 +88,54 @@ export class StoryService {
       .update({
         likes: toggle === "increase" ? likes + 1 : likes - 1,
       });
+  }
+
+  markFavourite(storyId: string) {
+    const userId = this.auth.user || localStorage.getItem("userId");
+    this.db.database
+      .ref(`${userId}/likedStories`)
+      .once("value")
+      .then((stories) => {
+        console.log(stories);
+        if (stories.val()) {
+          const likedStories: any[] = Object.values(stories.val());
+          console.log(stories.val());
+          // console.log(likedStories);
+
+          if (!likedStories.includes(storyId)) {
+            return this.db.database.ref(`${userId}/likedStories`).push(storyId);
+          }
+        } else {
+          return this.db.database.ref(`${userId}/likedStories`).set([storyId]);
+        }
+      });
+  }
+
+  removeFromFavourite(storyId: string) {
+    const userId = this.auth.user || localStorage.getItem("userId");
+    this.db.database
+      .ref(`${userId}/likedStories`)
+      .once("value")
+      .then((stories) => {
+        const likedStories: any[] = Object.values(stories.val());
+        console.log("removing");
+        const filterArray = likedStories.filter((story) => {
+          return story !== storyId;
+        });
+        return this.db.database.ref(`${userId}/likedStories`).set(filterArray);
+      });
+  }
+
+  async likedStories(): Promise<any[]> {
+    console.log("liked");
+    const userId = this.auth.user || localStorage.getItem("userId");
+    const stories = await (
+      await this.db.database.ref(`${userId}/likedStories`).once("value")
+    ).val();
+    console.log(stories);
+    if (stories) {
+      return Object.values(stories);
+    }
+    return [];
   }
 }
