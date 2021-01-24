@@ -60,6 +60,34 @@ export class StoryService {
       );
   }
 
+  getStoryForUser() {
+    return this.angularFireStore
+      .collection("Stories", (ref) =>
+        ref.where(
+          "authorId",
+          "==",
+          this.auth.user || localStorage.getItem("userId")
+        )
+      )
+      .snapshotChanges()
+      .pipe(
+        map((snaps) => {
+          if (snaps) {
+            console.log("Here");
+            return snaps.map((snap) => {
+              const id = snap.payload.doc.id;
+              const data = snap.payload.doc.data();
+              return { ...(data as Story), id };
+            });
+          } else {
+            console.log("returning");
+            return of([]);
+          }
+        }),
+        tap(console.log)
+      );
+  }
+
   getStory(id: string) {
     return this.angularFireStore
       .collection("Stories")

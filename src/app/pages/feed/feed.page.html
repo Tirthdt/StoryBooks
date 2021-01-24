@@ -7,12 +7,22 @@
   <ion-content>
     <ion-list>
       <ion-menu-toggle>
+        <ion-item detail [routerLink]="['/', 'feed']">
+          <ion-label>Home</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item detail [routerLink]="['/', 'profile']">
+          <ion-label>Profile</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
         <ion-item detail [routerLink]="['/', 'favourites']">
           <ion-label>Liked Stories</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item detail button (click)="signout()">
+        <ion-item button (click)="signout()">
           <ion-label>Logout</ion-label>
         </ion-item>
       </ion-menu-toggle>

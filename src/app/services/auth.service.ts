@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFirestore } from "@angular/fire/firestore";
+import { AngularFireStorage } from "@angular/fire/storage";
 import { BehaviorSubject } from "rxjs";
+import { tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -8,7 +11,10 @@ import { BehaviorSubject } from "rxjs";
 export class AuthService {
   private userId: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private auth: AngularFireAuth) {
+  constructor(
+    private auth: AngularFireAuth,
+    private angularfire: AngularFirestore
+  ) {
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.userId.next(user.uid);
@@ -21,6 +27,14 @@ export class AuthService {
         }
       }
     });
+  }
+
+  getUserInfo() {
+    return this.angularfire
+      .collection("Users")
+      .doc(this.user || localStorage.getItem("userId"))
+      .valueChanges()
+      .pipe(tap(console.log));
   }
 
   public get user(): string {
