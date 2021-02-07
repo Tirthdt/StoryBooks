@@ -7,6 +7,7 @@ import { Story } from "../models/story";
 import { map, switchMap, tap } from "rxjs/operators";
 import * as firebase from "firebase/app";
 import { combineLatest, of } from "rxjs";
+import { promise } from "protractor";
 
 @Injectable({
   providedIn: "root",
@@ -22,7 +23,7 @@ export class StoryService {
   addStory(story: Story) {
     const path = `StoryImages/${new Date().getTime()}_${story.image.name}`;
     const url = this.storage.ref(path);
-    console.log("Adding a story");
+    // console.log("Adding a story");
     return this.storage
       .upload(path, story.image)
       .then((res) => {
@@ -73,18 +74,15 @@ export class StoryService {
       .pipe(
         map((snaps) => {
           if (snaps) {
-            console.log("Here");
             return snaps.map((snap) => {
               const id = snap.payload.doc.id;
               const data = snap.payload.doc.data();
               return { ...(data as Story), id };
             });
           } else {
-            console.log("returning");
             return of([]);
           }
-        }),
-        tap(console.log)
+        })
       );
   }
 
@@ -111,6 +109,41 @@ export class StoryService {
             );
         })
       );
+  }
+
+  editStory(id, story) {
+    if (story["image"]) {
+      //Delete the exiting story image
+      this.storage.ref(story["path"]).delete();
+      //Create a new path
+      const path = `StoryImages/${new Date().getTime()}_${story.image.name}`;
+      const url = this.storage.ref(path);
+      // console.log("Adding a story");
+      return this.storage
+        .upload(path, story.image)
+        .then((res) => {
+          return url.getDownloadURL().toPromise();
+        })
+        .then((downloadedUrl) => {
+          return this.angularFireStore.collection("Stories").doc(id).update({
+            title: story.title,
+            description: story.description,
+            authorId: story.authorId,
+            story: story.story,
+            imageUrl: downloadedUrl,
+            imagePath: path,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return this.angularFireStore.collection("Stories").doc(id).update({
+        title: story["title"],
+        story: story["story"],
+        description: story["description"],
+      });
+    }
   }
 
   updateLike(id: string, likes: number, toggle: string) {
@@ -147,7 +180,7 @@ export class StoryService {
       .once("value")
       .then((stories) => {
         const likedStories: any[] = Object.values(stories.val());
-        console.log("removing");
+
         const filterArray = likedStories.filter((story) => {
           return story !== storyId;
         });
@@ -176,7 +209,6 @@ export class StoryService {
       });
       return combineLatest(observables);
     } else {
-      console.log("returning null");
       return of([]);
     }
   }

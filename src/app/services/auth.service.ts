@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { AngularFireStorage } from "@angular/fire/storage";
 import { BehaviorSubject } from "rxjs";
 import { tap } from "rxjs/operators";
 
@@ -33,12 +32,11 @@ export class AuthService {
     return this.angularfire
       .collection("Users")
       .doc(this.user || localStorage.getItem("userId"))
-      .valueChanges()
-      .pipe(tap(console.log));
+      .valueChanges();
   }
 
   public get user(): string {
-    return this.userId.value;
+    return this.userId.value || localStorage.getItem("userId");
   }
 
   signup({ email, password }) {

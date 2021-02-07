@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { LoadingController } from "@ionic/angular";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { StoryService } from "../../services/story.service";
 import { AuthService } from "../../services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-add-story",
@@ -13,6 +14,10 @@ import { AuthService } from "../../services/auth.service";
 export class AddStoryPage implements OnInit {
   file: any = null;
   storyImage = null;
+  edit = false;
+  storyId;
+  editStory;
+  subsciption: Subscription;
   storyForm: FormGroup = new FormGroup({
     title: new FormControl(null, [
       Validators.required,
@@ -34,25 +39,48 @@ export class AddStoryPage implements OnInit {
     private storyService: StoryService,
     private authService: AuthService,
     private loading: LoadingController,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        this.edit = params["edit"];
+        this.storyId = params["id"];
+        this.subsciption = this.storyService
+          .getStory(this.storyId)
+          .subscribe((story) => {
+            this.storyImage = story["imageUrl"];
+            this.editStory = story;
+          });
+      }
+    });
+  }
 
   ngOnInit() {}
 
   submit() {
     this.loading
       .create({
-        message: "Adding the story...",
+        message: this.edit ? "Making the changes..." : "Adding the story...",
       })
       .then((loader) => {
         return loader.present();
       })
       .then(() => {
-        this.storyService.addStory({
-          ...this.storyForm.value,
-          image: this.file,
-          authorid: this.authService.user,
-        });
+        if (this.edit) {
+          this.storyService.editStory(this.storyId, {
+            ...this.storyForm.value,
+            image: this.file ? this.file : "",
+            authorId: this.authService.user,
+            path: this.editStory["imagePath"],
+          });
+        } else {
+          this.storyService.addStory({
+            ...this.storyForm.value,
+            image: this.file,
+            authorid: this.authService.user,
+          });
+        }
       })
       .then(() => {
         console.log("story uploaded successfully");
@@ -79,6 +107,10 @@ export class AddStoryPage implements OnInit {
       };
       reader.readAsDataURL(selectedFile[0]);
     }
+  }
+
+  ionViewWillLeave() {
+    this.subsciption.unsubscribe();
   }
 
   public get title(): any {

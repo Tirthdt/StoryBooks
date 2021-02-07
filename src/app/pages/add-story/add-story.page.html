@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Add Story</ion-title>
+    <ion-title>{{ edit ? 'Edit Story' : 'Add Story' }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/feed"></ion-back-button>
     </ion-buttons>
@@ -12,17 +12,20 @@
     <ion-row>
       <ion-col size-md="10" offset-md="1">
         <ion-card>
-          <ion-card-header>
+          <ion-card-header *ngIf="!edit">
             <ion-card-title id="msg">The New Story Awaits....</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-img *ngIf="storyImage" [src]="storyImage"></ion-img>
+            <ion-img
+              *ngIf="storyImage"
+              [src]="edit && !file ? editStory['imageUrl'] : storyImage"
+            ></ion-img>
             <ion-button
               (click)="openFileSelector()"
               expand="block"
               shape="round"
             >
-              {{ file ? 'Change Image' : 'Select Image' }}
+              {{ file || edit? 'Change Image' : 'Select Image' }}
               <input
                 [hidden]="true"
                 id="uploadBtn"
@@ -34,7 +37,11 @@
             <form [formGroup]="storyForm" (ngSubmit)="submit()">
               <ion-item>
                 <ion-label position="floating">Title</ion-label>
-                <ion-input type="text" formControlName="title"></ion-input>
+                <ion-input
+                  type="text"
+                  formControlName="title"
+                  [value]="edit && editStory ? editStory['title'] : ''"
+                ></ion-input>
               </ion-item>
               <ion-text
                 color="danger"
@@ -46,6 +53,7 @@
                 <ion-label position="floating">Description</ion-label>
                 <ion-input
                   type="text"
+                  [value]="edit && editStory ? editStory['description'] : ''"
                   formControlName="description"
                 ></ion-input>
               </ion-item>
@@ -59,7 +67,12 @@
               </ion-text>
               <ion-item>
                 <ion-label position="floating">Enter the Story</ion-label>
-                <ion-textarea formControlName="story" rows="5"></ion-textarea>
+                <ion-textarea
+                  [value]="edit && editStory ? editStory['story'] : ''"
+                  formControlName="story"
+                  rows="5"
+                >
+                </ion-textarea>
               </ion-item>
               <ion-text
                 color="danger"

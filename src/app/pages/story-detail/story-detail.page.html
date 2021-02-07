@@ -37,6 +37,13 @@
           >
             <i [class]="liked"></i>
           </ion-button>
+          <ion-button
+            *ngIf="story.authorId === auth.user"
+            expand="block"
+            (click)="edit()"
+          >
+            Edit the story
+          </ion-button>
         </ion-card>
       </ion-col>
 

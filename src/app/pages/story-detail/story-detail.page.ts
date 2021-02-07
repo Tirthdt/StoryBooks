@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
 import { StoryService } from "../../services/story.service";
 
 @Component({
@@ -15,7 +16,9 @@ export class StoryDetailPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private storyService: StoryService
+    private router: Router,
+    private storyService: StoryService,
+    public auth: AuthService
   ) {
     this.storyId = this.route.snapshot.paramMap.get("id");
   }
@@ -37,6 +40,15 @@ export class StoryDetailPage implements OnInit {
     );
     this.liked =
       this.liked === "fas fa-heart" ? "far fa-heart" : "fas fa-heart";
+  }
+
+  edit() {
+    this.router.navigate(["", "add-story"], {
+      queryParams: {
+        id: this.storyId,
+        edit: "true",
+      },
+    });
   }
 
   ionViewWillLeave() {
