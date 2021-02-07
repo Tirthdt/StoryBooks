@@ -24,20 +24,22 @@
             </ion-text>
           </ion-item>
           <ion-list *ngIf="stories.length > 0">
-            <ion-item
-              detail
-              [routerLink]="['','story-detail', story.id]"
-              routerLinkActive="router-link-active"
-              *ngFor="let story of stories"
-            >
-              <ion-thumbnail>
-                <img [src]="story.imageUrl" />
-              </ion-thumbnail>
-              <ion-text class="ion-margin">
-                <h3>{{ story.title }}</h3>
-                <p>{{ story.description }}</p>
-              </ion-text>
-            </ion-item>
+            <ng-container *ngFor="let story of stories">
+              <ion-item
+                detail
+                *ngIf="story !== 'null'"
+                [routerLink]="['','story-detail', story.id]"
+                routerLinkActive="router-link-active"
+              >
+                <ion-thumbnail>
+                  <img [src]="story.imageUrl" />
+                </ion-thumbnail>
+                <ion-text class="ion-margin">
+                  <h3>{{ story.title }}</h3>
+                  <p>{{ story.description }}</p>
+                </ion-text>
+              </ion-item>
+            </ng-container>
           </ion-list>
         </ng-container>
         <ng-template #loading>

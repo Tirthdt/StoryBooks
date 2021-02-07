@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "login",
     pathMatch: "full",
   },
   {
@@ -56,12 +56,16 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'favourites',
-    loadChildren: () => import('./pages/favourites/favourites.module').then( m => m.FavouritesPageModule)
+    path: "favourites",
+    loadChildren: () =>
+      import("./pages/favourites/favourites.module").then(
+        (m) => m.FavouritesPageModule
+      ),
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    path: "profile",
+    loadChildren: () =>
+      import("./pages/profile/profile.module").then((m) => m.ProfilePageModule),
   },
 ];
 

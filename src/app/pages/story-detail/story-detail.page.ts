@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AlertController } from "@ionic/angular";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { StoryService } from "../../services/story.service";
@@ -18,7 +19,8 @@ export class StoryDetailPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private storyService: StoryService,
-    public auth: AuthService
+    public auth: AuthService,
+    private alert: AlertController
   ) {
     this.storyId = this.route.snapshot.paramMap.get("id");
   }
@@ -49,6 +51,32 @@ export class StoryDetailPage implements OnInit {
         edit: "true",
       },
     });
+  }
+
+  delete(path) {
+    console.log(path);
+    this.alert
+      .create({
+        header: "Confirm",
+        message: "Are you sure you want to delete this story?",
+        buttons: [
+          {
+            role: "cancel",
+            text: "No",
+          },
+          {
+            text: "Yes",
+            handler: () => {
+              this.storyService.deleteStory(path, this.storyId).then(() => {
+                this.router.navigate(["", "feed"]);
+              });
+            },
+          },
+        ],
+      })
+      .then((alert) => {
+        alert.present();
+      });
   }
 
   ionViewWillLeave() {

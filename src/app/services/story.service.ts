@@ -93,11 +93,17 @@ export class StoryService {
       .snapshotChanges()
       .pipe(
         map((snap) => {
+          if (snap.type === "removed") {
+            return { id: "dummy", data: null };
+          }
           const id = snap.payload.id;
           const data = snap.payload.data();
           return { id, ...(data as any) };
         }),
         switchMap((story: any) => {
+          if (story["id"] === "dummy") {
+            return of("null");
+          }
           return this.angularFireStore
             .collection("Users")
             .doc(story.authorId)
@@ -188,6 +194,11 @@ export class StoryService {
       });
   }
 
+  deleteStory(path, id) {
+    this.storage.ref(path).delete();
+    return this.angularFireStore.collection("Stories").doc(id).delete();
+  }
+
   async likedStories(): Promise<any[]> {
     const userId = this.auth.user || localStorage.getItem("userId");
     const stories = await (
@@ -207,6 +218,7 @@ export class StoryService {
       const observables = storyIds.map((ids) => {
         return this.getStory(ids);
       });
+
       return combineLatest(observables);
     } else {
       return of([]);
