@@ -1,68 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title> Stories </ion-title>
+    <ion-title> StoryBooks </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size-md="8" offset-md="2">
-        <ion-item [routerLink]="['/signup']">
-          <ion-label>SignUp</ion-label>
-        </ion-item>
-        <ion-item [routerLink]="['/login']">
-          <ion-label>Login</ion-label>
-        </ion-item>
-        <ion-button
-          (click)="signout()"
-          expand="block"
-          fill="clear"
-          shape="round"
+      <ion-col size-xs="12" size-sm="12" size-md="6">
+        <ion-slides
+          mode="ios"
+          [options]="slideOpts"
+          pager="false"
+          scrollbar="false"
         >
-          Signout
+          <ion-slide id="slide1">
+            <h1>Look for hundreds of stories shared by the users</h1>
+          </ion-slide>
+          <ion-slide id="slide2">
+            <h1>Make a cup of coffee and sit back to read the stories</h1>
+          </ion-slide>
+          <ion-slide id="slide3">
+            <h1>Post your own stories to share with the world</h1>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+      <ion-col size-xs="12" size-sm="12" size-md="6">
+        <ion-button (click)="onClick()" expand="block" style="margin-top: 50%">
+          Login/Signup
         </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!-- <ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title>Choose Images to Upload</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-button color="success" (click)="openFileSelector()" shape="round">
-          <span>Select Image</span>
-          <input
-            [hidden]="true"
-            id="uploadBtn"
-            type="file"
-            class="upload"
-            (change)="uploadFile($event.target.files)"
-          />
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="ion-text-center" *ngIf="isUploading && !isUploaded">
-      <ion-card-header>
-        <ion-card-title>Selected File:<b>{{ fileName }}</b></ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <div *ngIf="percentage$ | async as pct">
-          Progress: {{ pct | number }}%
-          <ion-progress-bar [value]="pct / 100"></ion-progress-bar>
-        </div>
-      </ion-card-content>
-    </ion-card>
-    <ion-card [hidden]="true">
-      <div *ngIf="snapshot$ | async as snap"></div>
-    </ion-card>
-  </ion-grid> -->
-  <ion-button (click)="markFavourite()" expand="block" shape="round">
-    Mark
-  </ion-button>
-  <ion-button (click)="removeFavourite()" expand="block" shape="round">
-    Remove
-  </ion-button>
 </ion-content>
