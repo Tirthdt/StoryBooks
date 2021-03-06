@@ -40,6 +40,7 @@ export class AuthService {
   }
 
   signup({ email, password }) {
+    console.log();
     return this.auth.createUserWithEmailAndPassword(email, password);
   }
 

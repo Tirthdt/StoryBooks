@@ -30,7 +30,7 @@ export class FeedPage implements OnInit {
 
   signout() {
     this.authService.signout().then(() => {
-      this.router.navigate(["", "login"]);
+      this.router.navigate(["", "auth-page"]);
     });
   }
 }

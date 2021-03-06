@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "login",
+    redirectTo: "home",
     pathMatch: "full",
   },
   {
@@ -28,20 +28,7 @@ const routes: Routes = [
         (m) => m.AddStoryPageModule
       ),
   },
-  {
-    path: "signup",
-    ...canActivate(redirectLoggedInto),
-    loadChildren: () =>
-      import("./pages/auth/signup/signup.module").then(
-        (m) => m.SignupPageModule
-      ),
-  },
-  {
-    path: "login",
-    ...canActivate(redirectLoggedInto),
-    loadChildren: () =>
-      import("./pages/auth/login/login.module").then((m) => m.LoginPageModule),
-  },
+
   {
     path: "feed",
     ...canActivate(redirectUnauthorizedtoLogin),
@@ -66,6 +53,18 @@ const routes: Routes = [
     path: "profile",
     loadChildren: () =>
       import("./pages/profile/profile.module").then((m) => m.ProfilePageModule),
+  },
+  {
+    path: "about",
+    loadChildren: () =>
+      import("./pages/about/about.module").then((m) => m.AboutPageModule),
+  },
+  {
+    path: "auth-page",
+    loadChildren: () =>
+      import("./pages/auth-page/auth-page.module").then(
+        (m) => m.AuthPagePageModule
+      ),
   },
 ];
 

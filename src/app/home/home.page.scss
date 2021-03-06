@@ -1,41 +1,48 @@
-ion-slides {
-  height: 80vh;
+ion-toolbar {
+  ion-buttons {
+    ion-button {
+      --background: #ff005c;
+    }
+  }
 }
 
-ion-slide {
-  border-radius: 10px;
+#showcase {
+  height: 92vh;
+  background: url("./cover.jpg") no-repeat center center/cover;
   position: relative;
-}
-
-#slide1 {
-  background: url("../../assets/image1.jpg") no-repeat center center/cover;
-}
-
-#slide2 {
-  background: url("../../assets/image2.jpg") no-repeat center center/cover;
-}
-
-#slide3 {
-  background: url("../../assets/image3.jpg") no-repeat center center/cover;
-}
-
-#slide1::before,
-#slide2::before,
-#slide3::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  height: 80vh;
-  background: #111;
-  border-radius: 10px;
-  opacity: 0.7;
-  width: 100%;
-}
-
-#slide1 h1,
-#slide2 h1,
-#slide3 h1 {
-  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   color: #fff;
+
+  & > * {
+    z-index: 10;
+  }
+
+  h2 {
+    font-size: 3.2rem;
+    text-align: center;
+  }
+
+  a {
+    display: block;
+  }
+
+  &::after {
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: inset 100px 100px 1800px #000000,
+      inset -80px -70px 180px #000000;
+  }
+
+  & ion-button {
+    --background: #ff005c;
+  }
 }

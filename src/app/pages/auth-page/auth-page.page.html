@@ -1,0 +1,110 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="10" offset-md="1">
+        <ion-segment
+          value="signup"
+          mode="ios"
+          (ionChange)="segmentChanged($event)"
+        >
+          <ion-segment-button value="signup">
+            <ion-label>Signup</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="login">
+            <ion-label>Login</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+
+        <ion-card>
+          <div id="img-container">
+            <img src="../../../../assets/cover.png" alt="heading-img" />
+          </div>
+          <ion-card-content *ngIf="selectedForm == 'signup'">
+            <ion-card-header>
+              <ion-card-title>Signup for Free</ion-card-title>
+            </ion-card-header>
+            <form [formGroup]="signupForm" (ngSubmit)="signup()">
+              <div class="form-control">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  formControlName="name"
+                  name="name"
+                  autocomplete="name"
+                />
+              </div>
+              <div class="form-control">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  formControlName="email"
+                  name="email"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-control">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  formControlName="password"
+                  autocomplete="current-password"
+                />
+              </div>
+              <ion-button
+                [disabled]="email.invalid || name.invalid || password.invalid"
+                type="submit"
+              >
+                Signup
+              </ion-button>
+            </form>
+          </ion-card-content>
+
+          <ion-card-content *ngIf="selectedForm == 'login'">
+            <ion-card-header>
+              <ion-card-title>Login</ion-card-title>
+            </ion-card-header>
+            <form
+              [formGroup]="loginForm"
+              autocomplete="off"
+              (ngSubmit)="login()"
+            >
+              <div class="form-control">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  formControlName="email"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-control">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  formControlName="password"
+                  autocomplete="current-password"
+                />
+              </div>
+              <ion-button
+                [disabled]="email.invalid || password.invalid"
+                type="submit"
+              >
+                Login
+              </ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+        <ion-button
+          [routerLink]="['/home']"
+          expand="block"
+          fill="clear"
+          shape="round"
+        >
+          Back To Home Page
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,70 @@
+ion-segment {
+  --background: #26001b;
+  color: #fff;
+}
+
+ion-card {
+  --background: #26001b;
+  --color: #fff;
+
+  #img-container {
+    max-height: 50vh;
+    width: 100%;
+    padding: 0.2rem;
+    img {
+      max-height: 50vh;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+ion-col {
+  ion-button {
+    --color: #fff;
+  }
+}
+
+.form-control {
+  label {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    font-size: 1.3rem;
+  }
+  input {
+    display: block;
+    width: 90%;
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.09rem;
+    border-bottom: 3px solid #ccc;
+    margin: 0 auto;
+    padding: 0.2rem;
+    margin-bottom: 10px;
+
+    &:focus {
+      border-bottom: 3px solid #ccc;
+      outline: none;
+    }
+  }
+}
+
+ion-item {
+  --background: transparent;
+  --color: #fff;
+}
+
+ion-button {
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+ion-card-title {
+  --color: #fff;
+  text-align: center;
+  font-size: 1.8rem;
+}
