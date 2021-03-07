@@ -11,7 +11,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size-xs="12" size-sm="12" size-md="6">
-        <ion-card *ngIf="user$ | async; let user">
+        <ion-card *ngIf="user$ | async; let user" class="profileImage">
           <img
             [src]="user.imageUrl ? user.imageUrl : 'https://picsum.photos/200'"
             class="center"
@@ -24,7 +24,7 @@
         </ion-card>
       </ion-col>
       <ion-col size-xs="12" size-sm="12" size-md="6">
-        <ion-card>
+        <ion-card class="myStories">
           <ion-card-header>
             <ion-card-title>My stories</ion-card-title>
           </ion-card-header>

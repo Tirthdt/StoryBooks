@@ -25,18 +25,20 @@
             <hr />
             <ion-text color="primary"> {{ story.story }} </ion-text>
             <br />
+            <br />
             <ion-text color="seconday">
               <h2>{{ story.likes }} people likes this story</h2>
+              <ion-button
+                size="large"
+                (click)="triggerLike(story.likes, story.id)"
+                fill="clear"
+                color="danger"
+              >
+                <i [class]="liked"></i>
+              </ion-button>
             </ion-text>
           </ion-card-content>
-          <ion-button
-            size="large"
-            (click)="triggerLike(story.likes, story.id)"
-            fill="clear"
-            color="danger"
-          >
-            <i [class]="liked"></i>
-          </ion-button>
+
           <ion-row>
             <ion-col size="6">
               <ion-button

@@ -1,6 +1,6 @@
-<ion-menu side="start" menuId="first" contentId="main">
+<ion-menu side="start" menuId="first" contentId="main" class="menuClass">
   <ion-header>
-    <ion-toolbar color="primary">
+    <ion-toolbar>
       <ion-title class="menuTitle">StoryBooks</ion-title>
     </ion-toolbar>
   </ion-header>
@@ -19,6 +19,11 @@
       <ion-menu-toggle>
         <ion-item detail [routerLink]="['/', 'favourites']">
           <ion-label>Liked Stories</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item detail [routerLink]="['/', 'add-story']">
+          <ion-label>Write a Story</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
@@ -60,7 +65,7 @@
     </ion-row>
     <ion-row>
       <ion-col size-md="8" offset-md="2">
-        <ion-text class="ion-text-center" color="primary">
+        <ion-text class="ion-text-center header">
           <h1 id="heading">Featured Stories</h1>
         </ion-text>
         <ion-item
@@ -69,20 +74,20 @@
           routerLinkActive="router-link-active"
           detail
         >
-          <ion-avatar class="ion-margin-end">
+          <ion-thumbnail class="ion-margin-end">
             <img [src]="story.imageUrl" />
-          </ion-avatar>
-          <ion-label
+          </ion-thumbnail>
+          <ion-text
             ><h3>{{ story.title }}</h3>
-            <p>{{ story.description }}</p></ion-label
+            <p>{{ story.description }}</p></ion-text
           >
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-fab vertical="bottom" routerLink="/add-story" horizontal="end">
+    <!-- <ion-fab vertical="bottom" routerLink="/add-story" horizontal="end">
       <ion-fab-button>
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-    </ion-fab>
+    </ion-fab> -->
   </ion-grid>
 </ion-content>

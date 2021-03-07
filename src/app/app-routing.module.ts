@@ -6,12 +6,13 @@ import {
   redirectLoggedInTo,
 } from "@angular/fire/auth-guard";
 
-const redirectUnauthorizedtoLogin = () => redirectUnauthorizedTo(["login"]);
+const redirectUnauthorizedtoLogin = () => redirectUnauthorizedTo(["auth-page"]);
 const redirectLoggedInto = () => redirectLoggedInTo(["feed"]);
 
 const routes: Routes = [
   {
     path: "home",
+    ...canActivate(redirectLoggedInto),
     loadChildren: () =>
       import("./home/home.module").then((m) => m.HomePageModule),
   },
@@ -37,6 +38,7 @@ const routes: Routes = [
   },
   {
     path: "story-detail/:id",
+    ...canActivate(redirectUnauthorizedtoLogin),
     loadChildren: () =>
       import("./pages/story-detail/story-detail.module").then(
         (m) => m.StoryDetailPageModule
@@ -44,6 +46,7 @@ const routes: Routes = [
   },
   {
     path: "favourites",
+    ...canActivate(redirectUnauthorizedtoLogin),
     loadChildren: () =>
       import("./pages/favourites/favourites.module").then(
         (m) => m.FavouritesPageModule
@@ -51,6 +54,7 @@ const routes: Routes = [
   },
   {
     path: "profile",
+    ...canActivate(redirectUnauthorizedtoLogin),
     loadChildren: () =>
       import("./pages/profile/profile.module").then((m) => m.ProfilePageModule),
   },
@@ -61,6 +65,7 @@ const routes: Routes = [
   },
   {
     path: "auth-page",
+    ...canActivate(redirectLoggedInto),
     loadChildren: () =>
       import("./pages/auth-page/auth-page.module").then(
         (m) => m.AuthPagePageModule

@@ -1,0 +1,27 @@
+* {
+  color: #fff;
+}
+
+ion-card {
+  background: #4a3933;
+
+  ion-card-header {
+    padding: 0;
+    ion-card-title h1 {
+      font-size: 2rem;
+    }
+
+    ion-card-subtitle {
+      font-size: 1.2rem;
+    }
+  }
+
+  ion-text {
+    font-size: 1.1rem;
+
+    ion-button {
+      --padding-start: 0;
+      --padding-bottom: 0;
+    }
+  }
+}
