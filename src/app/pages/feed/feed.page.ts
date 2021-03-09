@@ -11,9 +11,10 @@ import { AuthService } from "../../services/auth.service";
 })
 export class FeedPage implements OnInit {
   public stories$: Observable<any[]>;
+  public recentStories$: Observable<any[]>;
 
   slideOpts = {
-    initialSlide: 1,
+    initialSlide: 0,
     speed: 200,
     autoplay: true,
   };
@@ -26,6 +27,7 @@ export class FeedPage implements OnInit {
 
   ngOnInit() {
     this.stories$ = this.storyService.getAllStories();
+    this.recentStories$ = this.storyService.getRecentStories();
   }
 
   signout() {

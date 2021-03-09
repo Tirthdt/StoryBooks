@@ -46,6 +46,21 @@ export class StoryService {
       });
   }
 
+  getRecentStories() {
+    return this.angularFireStore
+      .collection("Stories", (ref) => ref.orderBy("createdAt", "desc").limit(2))
+      .snapshotChanges()
+      .pipe(
+        map((snaps) => {
+          return snaps.map((snap) => {
+            const id = snap.payload.doc.id;
+            const data = snap.payload.doc.data();
+            return { ...(data as Story), id };
+          });
+        })
+      );
+  }
+
   getAllStories() {
     return this.angularFireStore
       .collection("Stories")

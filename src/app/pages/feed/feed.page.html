@@ -47,22 +47,68 @@
 <ion-content id="main">
   <ion-grid>
     <ion-row>
-      <ion-col size-md="8" offset-md="2">
-        <ion-slides
+      <ion-col
+        *ngIf="recentStories$ | async; let recentStories; else slideLoading"
+        size-md="8"
+        offset-md="2"
+      >
+        <ion-text class="ion-text-center header">
+          <h1 id="heading">Recent Stories</h1>
+        </ion-text>
+        <!-- <ion-slides
           mode="ios"
           [options]="slideOpts"
           pager="ios"
           scrollbar="ios"
         >
-          <ion-slide>
-            <h1>Story 1</h1>
+          <ion-slide *ngFor="let story of recentStories">
+            <ion-img [src]="story.imageUrl"></ion-img>
+            <div class="content">
+              <h2>{{ story.title }}</h2>
+            </div>
           </ion-slide>
-          <ion-slide>
-            <h1>Story 2</h1>
-          </ion-slide>
-        </ion-slides>
+        </ion-slides> -->
+        <ion-item
+          *ngFor="let story of recentStories"
+          [routerLink]="['','story-detail', story.id]"
+          routerLinkActive="router-link-active"
+          detail
+        >
+          <ion-thumbnail class="ion-margin-end">
+            <img [src]="story.imageUrl" />
+          </ion-thumbnail>
+          <ion-text
+            ><h3>{{ story.title }}</h3>
+            <p>{{ story.description }}</p></ion-text
+          >
+        </ion-item>
       </ion-col>
+
+      <ng-template #slideLoading>
+        <ion-col size-md="8" offset-md="2">
+          <ion-item *ngFor="let i of [1, 2]">
+            <ion-thumbnail>
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-text style="width: 100%" class="ion-margin">
+              <h3>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </h3>
+              <p>
+                <ion-skeleton-text
+                  animated
+                  style="width: 100%"
+                ></ion-skeleton-text>
+              </p>
+            </ion-text>
+          </ion-item>
+        </ion-col>
+      </ng-template>
     </ion-row>
+
     <ion-row>
       <ion-col size-md="8" offset-md="2">
         <ion-text class="ion-text-center header">
@@ -84,10 +130,5 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <!-- <ion-fab vertical="bottom" routerLink="/add-story" horizontal="end">
-      <ion-fab-button>
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab> -->
   </ion-grid>
 </ion-content>
